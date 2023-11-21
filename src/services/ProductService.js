@@ -104,7 +104,7 @@ const getAllProduct = (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
         try {
             const totalProduct = await Product.count();
-
+            let allProduct = [];
             if (filter) {
                 let label = filter[0];
                 const label2 = filter[1];
@@ -117,7 +117,7 @@ const getAllProduct = (limit, page, sort, filter) => {
 
                 resolve({
                     status: 'OK',
-                    message: 'SUCCESS',
+                    message: 'SUCCESS FILTER',
                     total: totalProduct,
                     totalPage: Math.ceil(totalProduct / limit),
                     pageCurrent: Number(page + 1),
@@ -135,7 +135,7 @@ const getAllProduct = (limit, page, sort, filter) => {
 
                 resolve({
                     status: 'OK',
-                    message: 'SUCCESS',
+                    message: 'SUCCESS SORT',
                     total: totalProduct,
                     totalPage: Math.ceil(totalProduct / limit),
                     pageCurrent: Number(page + 1),
@@ -143,9 +143,13 @@ const getAllProduct = (limit, page, sort, filter) => {
                 });
             }
 
-            const allProduct = await Product.find()
-                .limit(limit)
-                .skip(limit * page);
+            if (!limit) {
+                allProduct = await Product.find();
+            } else {
+                allProduct = await Product.find()
+                    .limit(limit)
+                    .skip(limit * page);
+            }
 
             resolve({
                 status: 'OK',

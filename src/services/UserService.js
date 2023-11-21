@@ -5,7 +5,7 @@ const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
 // regester
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { username, email, password, dateOfBirth, address, phone } = newUser;
+        const { username, email, password, dateOfBirth, address, phone, name } = newUser;
         try {
             const checkUser = await User.findOne({
                 email: email,
@@ -26,6 +26,7 @@ const createUser = (newUser) => {
                 dateOfBirth,
                 address,
                 phone,
+                name,
             });
             if (createdUser) {
                 resolve({
