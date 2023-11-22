@@ -32,28 +32,11 @@ const createOrder = (newOrder) => {
                         new: true,
                     },
                 );
-
                 if (productData) {
-                    const createOrder = await Order.create({
-                        orderItems,
-                        shippingAdress: {
-                            fullname,
-                            address,
-                            phone,
-                            city,
-                        },
-                        paymentMethod,
-                        itemsPrice,
-                        shippingPrice,
-                        totalPrice,
-                        user,
-                    });
-                    if (createOrder) {
-                        return {
-                            status: 'OK',
-                            message: 'SUCCESS',
-                        };
-                    }
+                    return {
+                        status: 'OK',
+                        message: 'SUCCESS',
+                    };
                 } else {
                     return {
                         status: 'OK',
@@ -62,18 +45,37 @@ const createOrder = (newOrder) => {
                     };
                 }
             });
+
             const result = await Promise.all(promise);
             const newData = result.filter((item) => item.id);
+
             if (newData.length) {
                 resolve({
                     status: 'ERR',
                     message: `Sản phẩm với id ${newData.join(',')} không đủ hàng!`,
                 });
+            } else {
+                const createOrder = await Order.create({
+                    orderItems,
+                    shippingAdress: {
+                        fullname,
+                        address,
+                        phone,
+                        city,
+                    },
+                    paymentMethod,
+                    itemsPrice,
+                    shippingPrice,
+                    totalPrice,
+                    user,
+                });
+                if (createOrder) {
+                    resolve({
+                        status: 'OK',
+                        message: 'SUCCESS',
+                    });
+                }
             }
-            resolve({
-                status: 'OK',
-                message: 'SUCCESS',
-            });
         } catch (error) {
             reject(error);
         }
@@ -83,7 +85,7 @@ const createOrder = (newOrder) => {
 const getOrderDetails = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const order = await Order.findOne({
+            const order = await Order.find({
                 user: id,
             });
             if (order === null) {

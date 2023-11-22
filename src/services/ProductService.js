@@ -23,6 +23,7 @@ const createProduct = (newProduct) => {
                 rating,
                 description,
                 sale,
+                quantity: countInStock,
             });
             if (newProduct) {
                 resolve({
