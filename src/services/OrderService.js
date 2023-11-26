@@ -203,10 +203,77 @@ const getAllOrder = () => {
     });
 };
 
+const deleteManyOrder = (ids) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Order.deleteMany({ _id: ids });
+
+            resolve({
+                status: 'OK',
+                message: 'DELETE MANY ORDER SUCCESS',
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+const deleteOrder = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkOrder = await Order.findOne({ _id: id });
+
+            if (checkOrder === null) {
+                resolve({
+                    status: 'OK',
+                    message: 'The order is not defined!',
+                });
+            }
+
+            await Order.findByIdAndDelete(id);
+
+            resolve({
+                status: 'OK',
+                message: 'DELETE USER SUCCESS',
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+const updateOrder = (id, data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkOrder = await Order.findOne({ _id: id });
+
+            if (checkOrder === null) {
+                resolve({
+                    status: 'OK',
+                    message: 'The order is not defined!',
+                });
+            }
+
+            const updatedOrder = await Order.findByIdAndUpdate(id, data, { new: true });
+
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: updatedOrder,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
     createOrder,
     getAllOrderDetails,
     getDetailsOrder,
     cancelDetailsOrder,
     getAllOrder,
+    deleteManyOrder,
+    deleteOrder,
+    updateOrder,
 };

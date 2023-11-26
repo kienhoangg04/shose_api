@@ -90,10 +90,68 @@ const getAllOrder = async (req, res) => {
     }
 };
 
+const deleteManyOrder = async (req, res) => {
+    try {
+        const ids = req.body.ids;
+        if (!ids) {
+            return res.status(200).json({
+                status: 'Error',
+                message: 'The order ids is required!',
+            });
+        }
+        const response = await OrderService.deleteManyOrder(ids);
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(404).json({
+            message: error,
+        });
+    }
+};
+
+const deleteOrder = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        if (!orderId) {
+            return res.status(200).json({
+                status: 'Error',
+                message: 'The order id is required!',
+            });
+        }
+        const response = await OrderService.deleteOrder(orderId);
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(404).json({
+            message: error,
+        });
+    }
+};
+
+const updateOrder = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const data = req.body;
+        if (!orderId) {
+            return res.status(200).json({
+                status: 'Error',
+                message: 'The order id is required!',
+            });
+        }
+        const response = await OrderService.updateOrder(orderId, data);
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(404).json({
+            message: error,
+        });
+    }
+};
+
 module.exports = {
     createOrder,
     getAllOrderDetails,
     getDetailsOrder,
     cancelDetailsOrder,
     getAllOrder,
+    deleteManyOrder,
+    deleteOrder,
+    updateOrder,
 };
