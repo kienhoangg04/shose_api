@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
         rating: { type: Number, required: true },
         description: { type: String },
         sale: { type: Number },
-        selled: { type: Number },
+        selled: { type: Number, default: 0 },
         quantity: { type: Number },
     },
     {

@@ -79,9 +79,21 @@ const cancelDetailsOrder = async (req, res) => {
     }
 };
 
+const getAllOrder = async (req, res) => {
+    try {
+        const data = await OrderService.getAllOrder();
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(404).json({
+            message: error,
+        });
+    }
+};
+
 module.exports = {
     createOrder,
     getAllOrderDetails,
     getDetailsOrder,
     cancelDetailsOrder,
+    getAllOrder,
 };
