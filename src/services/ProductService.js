@@ -188,20 +188,25 @@ const getProductHome = (filter) => {
 const getProductRelate = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const checkProduct = await Product.findOne({ _id: id });
+            const checkProduct = await Product.findById(id);
 
             if (checkProduct) {
                 const productRelate = await Product.aggregate([
-                    { $match: { _id: { $ne: id }, type: checkProduct.type } },
                     {
-                        $sample: { size: 3 },
+                        $match: {
+                            type: checkProduct.type,
+                        },
                     },
-                ]).limit(3);
+                    {
+                        $limit: 4,
+                    },
+                ]);
+                const filteredRelatedProducts = productRelate.filter((p) => String(p._id) !== id);
 
                 resolve({
                     status: 'OK',
                     message: 'SUCCESS',
-                    data: productRelate,
+                    data: filteredRelatedProducts,
                 });
             }
         } catch (error) {
