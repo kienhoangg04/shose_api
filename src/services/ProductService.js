@@ -185,6 +185,31 @@ const getProductHome = (filter) => {
     });
 };
 
+const getProductRelate = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkProduct = await Product.findOne({ _id: id });
+
+            if (checkProduct) {
+                const productRelate = await Product.aggregate([
+                    { $match: { _id: { $ne: id }, type: checkProduct.type } },
+                    {
+                        $sample: { size: 3 },
+                    },
+                ]).limit(3);
+
+                resolve({
+                    status: 'OK',
+                    message: 'SUCCESS',
+                    data: productRelate,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 const getDetailsProduct = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -234,4 +259,5 @@ module.exports = {
     getDetailsProduct,
     getAllType,
     getProductHome,
+    getProductRelate,
 };

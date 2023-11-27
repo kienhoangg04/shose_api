@@ -96,6 +96,18 @@ const getProductHome = async (req, res) => {
     }
 };
 
+const getProductRelate = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const response = await ProductService.getProductRelate(id);
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(404).json({
+            message: error,
+        });
+    }
+};
+
 const getDetailsProduct = async (req, res) => {
     try {
         const productId = req.params.id;
@@ -134,4 +146,5 @@ module.exports = {
     getDetailsProduct,
     getAllType,
     getProductHome,
+    getProductRelate,
 };
