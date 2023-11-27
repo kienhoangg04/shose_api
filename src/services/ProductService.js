@@ -166,6 +166,25 @@ const getAllProduct = (limit, page, sort, filter) => {
     });
 };
 
+const getProductHome = (filter) => {
+    return new Promise(async (resolve, reject) => {
+        const obj = {
+            [filter]: -1,
+        };
+        try {
+            const allProduct = await Product.find().sort(obj).limit(9);
+
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: allProduct,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 const getDetailsProduct = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -214,4 +233,5 @@ module.exports = {
     getAllProduct,
     getDetailsProduct,
     getAllType,
+    getProductHome,
 };
