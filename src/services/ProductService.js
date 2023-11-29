@@ -119,8 +119,8 @@ const getAllProduct = (limit, page, sort, filter) => {
                 resolve({
                     status: 'OK',
                     message: 'SUCCESS FILTER',
-                    total: totalProduct,
-                    totalPage: Math.ceil(totalProduct / limit),
+                    total: allProductFilter.length,
+                    totalPage: Math.ceil(allProductFilter.length / limit),
                     pageCurrent: Number(page + 1),
                     data: allProductFilter,
                 });
@@ -137,8 +137,8 @@ const getAllProduct = (limit, page, sort, filter) => {
                 resolve({
                     status: 'OK',
                     message: 'SUCCESS SORT',
-                    total: totalProduct,
-                    totalPage: Math.ceil(totalProduct / limit),
+                    total: allProductSort.length,
+                    totalPage: Math.ceil(allProductSort.length / limit),
                     pageCurrent: Number(page + 1),
                     data: allProductSort,
                 });

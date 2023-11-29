@@ -16,6 +16,8 @@ const createOrder = (newOrder) => {
             phone,
             user,
             email,
+            isPaid,
+            paiAt,
         } = newOrder;
         try {
             const promise = orderItems.map(async (order) => {
@@ -62,6 +64,7 @@ const createOrder = (newOrder) => {
                     shippingAdress: {
                         fullname,
                         address,
+                        email,
                         phone,
                         city,
                     },
@@ -70,6 +73,8 @@ const createOrder = (newOrder) => {
                     shippingPrice,
                     totalPrice,
                     user,
+                    isPaid,
+                    paiAt,
                 });
                 if (createOrder) {
                     await sendEmailCreateOrder(email, orderItems);
